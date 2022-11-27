@@ -1,0 +1,50 @@
+# Language: Français
+# Module: postslistOptions - 0.1
+# Date: 2010-09-09 23:05:58
+# Translated with translater 1.5
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: postslistOptions 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2010-09-09T23:05:58+00:00\n"
+"Last-Translator: JC Denis\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: _admin.php:27
+#: _admin.php:30
+msgid "Mark as opened"
+msgstr "Ouvrir"
+
+#: _admin.php:28
+#: _admin.php:31
+msgid "Mark as closed"
+msgstr "Fermer"
+
+#: _admin.php:29
+msgid "Delete all comments"
+msgstr "Supprimer tous les commentaires"
+
+#: _admin.php:32
+msgid "Delete all trackbacks"
+msgstr "Supprimer tous les rétroliens"
+
+#: _admin.php:38
+msgid "Are you sure you want to delete all comments?"
+msgstr "Êtes-vous sûr de vouloir supprimer tous les commentaires ?"
+
+#: _admin.php:39
+msgid "Are you sure you want to delete all trackbacks?"
+msgstr "Êtes-vous sûr de vouloir supprimer tous les rétroliens ?"
+
+#: _admin.php:46
+msgid "Confirm action"
+msgstr "Confirmation"
+
+#: _admin.php:112
+msgid "You are not allowed to change this entry option"
+msgstr "Vous n'êtes pas autorisé à changer cette option"
+

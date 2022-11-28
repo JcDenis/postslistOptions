@@ -1,8 +1,19 @@
 <?php
-// Language: Français 
+/**
+ * @brief postslistOptions, a plugin for Dotclear 2
+ *
+ * @package Dotclear
+ * @subpackage Plugin
+ *
+ * @author Jean-Christian Denis and Contributors
+ *
+ * @copyright Jean-Christian Denis
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
+// Language: Français
 // Module: postslistOptions - 0.1
-// Date: 2010-09-09 23:05:58 
-// Translated with dcTranslater - 1.5 
+// Date: 2010-09-09 23:05:58
+// Translated with dcTranslater - 1.5
 
 #_admin.php:27
 #_admin.php:30
@@ -29,5 +40,3 @@ $GLOBALS['__l10n']['Confirm action'] = 'Confirmation';
 
 #_admin.php:112
 $GLOBALS['__l10n']['You are not allowed to change this entry option'] = 'Vous n\'êtes pas autorisé à changer cette option';
-
-?>

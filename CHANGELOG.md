@@ -1,3 +1,7 @@
+2022.11.28
+ * Use SVG icon
+ * Update to Dotclear 2.24
+
 2013.07.10 
  * Fixed action on multiple posts
 

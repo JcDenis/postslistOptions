@@ -1,3 +1,7 @@
+2022.12.23
+- fix permissions
+- use anonymous function
+
 2022.11.28
  * Use SVG icon
  * Update to Dotclear 2.24

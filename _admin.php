@@ -21,14 +21,14 @@ if (!dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([dcAuth::PE
 dcCore::app()->addBehavior('adminPostsActions', function (dcPostsActions $pa) {
     $pa->addAction(
         [
-            __('Comments') => [
-                __('Mark as opened') => 'commentsopen',
-                __('Mark as closed') => 'commentsclose',
+            __('Comments')   => [
+                __('Mark as opened')      => 'commentsopen',
+                __('Mark as closed')      => 'commentsclose',
                 __('Delete all comments') => 'commentsdelete',
             ],
             __('Trackbacks') => [
-                __('Mark as opened') => 'trackbacksopen',
-                __('Mark as closed') => 'trackbacksclose',
+                __('Mark as opened')        => 'trackbacksopen',
+                __('Mark as closed')        => 'trackbacksclose',
                 __('Delete all trackbacks') => 'trackbacksdelete',
             ],
         ],

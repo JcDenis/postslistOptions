@@ -23,49 +23,28 @@ dcCore::app()->addBehavior('adminPostsActions', function (dcPostsActions $pa) {
         [
             __('Comments') => [
                 __('Mark as opened') => 'commentsopen',
-            ],
-        ],
-        ['behaviorsPostlistOptions', 'commentsOpen']
-    );
-    $pa->addAction(
-        [
-            __('Comments') => [
                 __('Mark as closed') => 'commentsclose',
-            ],
-        ],
-        ['behaviorsPostlistOptions', 'commentsClose']
-    );
-    $pa->addAction(
-        [
-            __('Comments') => [
                 __('Delete all comments') => 'commentsdelete',
             ],
-        ],
-        ['behaviorsPostlistOptions', 'commentsDelete']
-    );
-    $pa->addAction(
-        [
             __('Trackbacks') => [
                 __('Mark as opened') => 'trackbacksopen',
-            ],
-        ],
-        ['behaviorsPostlistOptions', 'trackbacksOpen']
-    );
-    $pa->addAction(
-        [
-            __('Trackbacks') => [
                 __('Mark as closed') => 'trackbacksclose',
-            ],
-        ],
-        ['behaviorsPostlistOptions', 'trackbacksClose']
-    );
-    $pa->addAction(
-        [
-            __('Trackbacks') => [
                 __('Delete all trackbacks') => 'trackbacksdelete',
             ],
         ],
-        ['behaviorsPostlistOptions', 'trackbacksDelete']
+        function (dcPostsActions $pa, ArrayObject $post) {
+            $actions = [
+                'commentsopen',
+                'commentsclose',
+                'commentsdelete',
+                'trackbacksopen',
+                'trackbacksclose',
+                'trackbacksdelete',
+            ];
+            if (in_array($pa->getAction(), $actions)) {
+                behaviorsPostlistOptions::{$pa->getAction()}($pa, $post);
+            }
+        }
     );
 });
 

@@ -2,10 +2,10 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="postslistOptions">
     <name>Posts list options</name>
-    <version>2022.11.28</version>
+    <version>2022.12.23</version>
     <author>Jean-Christian Denis and Contributors</author>
     <desc>Add some options on admin posts list</desc>
-    <file>https://github.com/JcDenis/postslistOptions/releases/download/v2022.11.28/plugin-postslistOptions.zip</file>
+    <file>https://github.com/JcDenis/postslistOptions/releases/download/v2022.12.23/plugin-postslistOptions.zip</file>
     <da:dcmin>2.24</da:dcmin>
     <da:details>https://plugins.dotaddict.org/dc2/details/postslistOptions</da:details>
     <da:support>https://github.com/JcDenis/postslistOptions</da:support>

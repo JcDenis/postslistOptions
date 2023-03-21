@@ -10,65 +10,40 @@
  * @copyright Jean-Christian Denis
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return null;
-}
+declare(strict_types=1);
 
-if (!dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([dcAuth::PERMISSION_ADMIN]), dcCore::app()->blog->id)) {
-    return null;
-}
+namespace Dotclear\Plugin\postslistOptions;
 
-dcCore::app()->addBehavior('adminPostsActions', function (dcPostsActions $pa) {
-    $pa->addAction(
-        [
-            __('Comments')   => [
-                __('Mark as opened')      => 'commentsopen',
-                __('Mark as closed')      => 'commentsclose',
-                __('Delete all comments') => 'commentsdelete',
-            ],
-            __('Trackbacks') => [
-                __('Mark as opened')        => 'trackbacksopen',
-                __('Mark as closed')        => 'trackbacksclose',
-                __('Delete all trackbacks') => 'trackbacksdelete',
-            ],
-        ],
-        function (dcPostsActions $pa, ArrayObject $post) {
-            $actions = [
-                'commentsopen',
-                'commentsclose',
-                'commentsdelete',
-                'trackbacksopen',
-                'trackbacksclose',
-                'trackbacksdelete',
-            ];
-            if (in_array($pa->getAction(), $actions)) {
-                behaviorsPostlistOptions::{$pa->getAction()}($pa, $post);
-            }
-        }
-    );
-});
+use ArrayObject;
+use dcBlog;
+use dcCore;
+use dcPage;
+use dcPostsActions;
+use Exception;
+use form;
+use html;
 
-class behaviorsPostlistOptions
+class BackendBehaviors
 {
-    public static function commentsOpen(dcPostsActions $pa, ArrayObject $post)
+    public static function commentsOpen(dcPostsActions $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 1);
         }
-        dcAdminNotices::addSuccessNotice(__('Comments successfully opened.'));
+        dcPage::addSuccessNotice(__('Comments successfully opened.'));
         $pa->redirect(true);
     }
 
-    public static function commentsClose(dcPostsActions $pa, ArrayObject $post)
+    public static function commentsClose(dcPostsActions $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 0);
         }
-        dcAdminNotices::addSuccessNotice(__('Comments successfully closed.'));
+        dcPage::addSuccessNotice(__('Comments successfully closed.'));
         $pa->redirect(true);
     }
 
-    public static function commentsDelete(dcPostsActions $pa, ArrayObject $post)
+    public static function commentsDelete(dcPostsActions $pa, ArrayObject $post): void
     {
         $ids = self::getPostsIds($pa);
 
@@ -99,30 +74,30 @@ class behaviorsPostlistOptions
                 self::delPostComments($post_id, false);
                 self::updPostOption($post_id, 'nb_comment', 0);
             }
-            dcAdminNotices::addSuccessNotice(__('Comments successfully deleted.'));
+            dcPage::addSuccessNotice(__('Comments successfully deleted.'));
             $pa->redirect(true);
         }
     }
 
-    public static function trackbacksOpen(dcPostsActions $pa, ArrayObject $post)
+    public static function trackbacksOpen(dcPostsActions $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 1);
         }
-        dcAdminNotices::addSuccessNotice(__('Trackbacks successfully opened.'));
+        dcPage::addSuccessNotice(__('Trackbacks successfully opened.'));
         $pa->redirect(true);
     }
 
-    public static function trackbacksClose(dcPostsActions $pa, ArrayObject $post)
+    public static function trackbacksClose(dcPostsActions $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 0);
         }
-        dcAdminNotices::addSuccessNotice(__('Trackbacks successfully closed.'));
+        dcPage::addSuccessNotice(__('Trackbacks successfully closed.'));
         $pa->redirect(true);
     }
 
-    public static function trackbacksDelete(dcPostsActions $pa, ArrayObject $post)
+    public static function trackbacksDelete(dcPostsActions $pa, ArrayObject $post): void
     {
         $ids = self::getPostsIds($pa);
 
@@ -153,12 +128,12 @@ class behaviorsPostlistOptions
                 self::delPostComments($post_id, true);
                 self::updPostOption($post_id, 'nb_trackback', 0);
             }
-            dcAdminNotices::addSuccessNotice(__('Trackbacks successfully deleted.'));
+            dcPage::addSuccessNotice(__('Trackbacks successfully deleted.'));
             $pa->redirect(true);
         }
     }
 
-    private static function getPostsIds(dcPostsActions $pa)
+    private static function getPostsIds(dcPostsActions $pa): array
     {
         $posts_ids = $pa->getIDs();
         if (empty($posts_ids)) {
@@ -168,13 +143,13 @@ class behaviorsPostlistOptions
         return $posts_ids;
     }
 
-    private static function updPostOption($id, $option, $value)
+    private static function updPostOption(int $id, string $option, int $value): void
     {
         $id  = abs((int) $id);
         $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcBlog::POST_TABLE_NAME);
 
-        $cur->{$option}  = $value;
-        $cur->post_upddt = date('Y-m-d H:i:s');
+        $cur->setField($option, $value);
+        $cur->setField('post_upddt', date('Y-m-d H:i:s'));
 
         $cur->update(
             'WHERE post_id = ' . $id . ' ' .
@@ -183,7 +158,7 @@ class behaviorsPostlistOptions
         dcCore::app()->blog->triggerBlog();
     }
 
-    private static function delPostComments($id, $tb = false)
+    private static function delPostComments(int $id, bool $tb = false): void
     {
         $params = [
             'no_content'        => true,
@@ -194,7 +169,7 @@ class behaviorsPostlistOptions
 
         while ($comments->fetch()) {
             // slower but preserve behaviors
-            dcCore::app()->blog->delComment($comments->__get('comment_id'));
+            dcCore::app()->blog->delComment($comments->f('comment_id'));
         }
     }
 }

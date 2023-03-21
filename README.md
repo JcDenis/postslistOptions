@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/JcDenis/postslistOptions)](https://github.com/JcDenis/postslistOptions/releases)
 [![Date](https://img.shields.io/github/release-date/JcDenis/postslistOptions)](https://github.com/JcDenis/postslistOptions/releases)
 [![Issues](https://img.shields.io/github/issues/JcDenis/postslistOptions)](https://github.com/JcDenis/postslistOptions/issues)
-[![Dotclear](https://img.shields.io/badge/dotclear-v2.24-blue.svg)](https://fr.dotclear.org/download)
+[![Dotclear](https://img.shields.io/badge/dotclear-v2.25-blue.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-green.svg)](https://plugins.dotaddict.org/dc2/details/postslistOptions)
 [![License](https://img.shields.io/github/license/JcDenis/postslistOptions)](https://github.com/JcDenis/postslistOptions/blob/master/LICENSE)
 
@@ -20,7 +20,7 @@ open/close/delete comments/trackbacks on multiple posts.
 _PostslistOptions_ requires: 
 
  * admin permissions
- * Dotclear 2.24 
+ * Dotclear 2.25
 
 ## USAGE
 

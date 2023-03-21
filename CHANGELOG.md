@@ -1,3 +1,7 @@
+2023.03.21
+- require Dotclear 2.25
+- use namespace
+
 2022.12.23
 - fix permissions
 - use anonymous function

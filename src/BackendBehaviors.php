@@ -51,6 +51,11 @@ class BackendBehaviors
 
     public static function commentsDelete(dcPostsActions $pa, ArrayObject $post): void
     {
+        //nullsafe
+        if (is_null(dcCore::app()->blog)) {
+            return;
+        }
+
         $ids = self::getPostsIds($pa);
 
         if (empty($_POST['confirmdeletecomments'])) {
@@ -108,6 +113,11 @@ class BackendBehaviors
 
     public static function trackbacksDelete(dcPostsActions $pa, ArrayObject $post): void
     {
+        //nullsafe
+        if (is_null(dcCore::app()->blog)) {
+            return;
+        }
+
         $ids = self::getPostsIds($pa);
 
         if (empty($_POST['confirmdeletetrackbacks'])) {
@@ -157,6 +167,11 @@ class BackendBehaviors
 
     private static function updPostOption(int $id, string $option, int $value): void
     {
+        //nullsafe
+        if (is_null(dcCore::app()->blog)) {
+            return;
+        }
+
         $id  = abs((int) $id);
         $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcBlog::POST_TABLE_NAME);
 
@@ -172,6 +187,11 @@ class BackendBehaviors
 
     private static function delPostComments(int $id, bool $tb = false): void
     {
+        //nullsafe
+        if (is_null(dcCore::app()->blog)) {
+            return;
+        }
+
         $params = [
             'no_content'        => true,
             'post_id'           => abs((int) $id),

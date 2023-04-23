@@ -18,9 +18,9 @@ $this->registerModule(
     'Posts list options',
     'Add some options on admin posts list',
     'Jean-Christian Denis and Contributors',
-    '2023.03.21',
+    '2023.04.23',
     [
-        'requires'    => [['core', '2.25']],
+        'requires'    => [['core', '2.26']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcCore::app()->auth::PERMISSION_ADMIN,
         ]),

@@ -68,19 +68,25 @@ class BackendBehaviors
             );
 
             echo
-            (new Form('plocd'))->method('post')->action($pa->getURI())->fields([
-                (new Text('', $pa->getCheckboxes())),
-                (new Text('p', __('Are you sure you want to delete all comments?'))),
-                (new Para())->items(array_merge(
-                    [
-                        (new Submit(['do']))->value(__('yes')),
-                        dcCore::app()->formNonce(false),
-                        (new Hidden(['action'], 'commentsdelete')),
-                        (new Hidden(['confirmdeletecomments'], '1')),
-                    ],
-                    $pa->hiddenFields(),
-                )),
-            ])->render();
+            (new Form('plocd'))
+                ->__call('method', ['post'])
+                ->__call('action', [$pa->getURI()])
+                ->__call('fields', [[
+                    (new Text('', $pa->getCheckboxes())),
+                    (new Text('p', __('Are you sure you want to delete all comments?'))),
+                    (new Para())
+                        ->__call('items', [array_merge(
+                            [
+                                (new Submit(['do']))
+                                    ->__call('value', [__('yes')]),
+                                dcCore::app()->formNonce(false),
+                                (new Hidden(['action'], 'commentsdelete')),
+                                (new Hidden(['confirmdeletecomments'], '1')),
+                            ],
+                            $pa->hiddenFields(),
+                        )]),
+                ]])
+                ->render();
 
             $pa->endPage();
         } else {
@@ -130,19 +136,22 @@ class BackendBehaviors
             );
 
             echo
-            (new Form('plotd'))->method('post')->action($pa->getURI())->fields([
-                (new Text('', $pa->getCheckboxes())),
-                (new Text('p', __('Are you sure you want to delete all trackbacks?'))),
-                (new Para())->items(array_merge(
-                    [
-                        (new Submit(['do']))->value(__('yes')),
-                        dcCore::app()->formNonce(false),
-                        (new Hidden(['action'], 'trackbacksdelete')),
-                        (new Hidden(['confirmdeletetrackbacks'], '1')),
-                    ],
-                    $pa->hiddenFields(),
-                )),
-            ])->render();
+            (new Form('plotd'))
+                ->__call('method', ['post'])
+                ->__call('action', [$pa->getURI()])
+                ->__call('fields', [[
+                    (new Text('', $pa->getCheckboxes())),
+                    (new Text('p', __('Are you sure you want to delete all trackbacks?'))),
+                    (new Para())
+                        ->__call('items', [array_merge([
+                            (new Submit(['do']))
+                                ->__call('value', [__('yes')]),
+                            dcCore::app()->formNonce(false),
+                            (new Hidden(['action'], 'trackbacksdelete')),
+                            (new Hidden(['confirmdeletetrackbacks'], '1')),
+                        ], $pa->hiddenFields())]),
+                ]])
+                ->render();
 
             $pa->endPage();
         } else {

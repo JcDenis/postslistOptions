@@ -16,37 +16,28 @@ namespace Dotclear\Plugin\postslistOptions;
 
 use ArrayObject;
 use dcCore;
-use dcNsProcess;
-use dcPostsActions;
+use Dotclear\Core\Backend\Action\ActionsPosts;
+use Dotclear\Core\Process;
 
 /**
  * Improve admin class
  *
  * Add menu and dashboard icons, load Improve action modules.
  */
-class Backend extends dcNsProcess
+class Backend extends Process
 {
     public static function init(): bool
     {
-        static::$init = defined('DC_CONTEXT_ADMIN')
-            && !is_null(dcCore::app()->auth) && !is_null(dcCore::app()->blog)
-            && dcCore::app()->auth->check(
-                dcCore::app()->auth->makePermissions([
-                    dcCore::app()->auth::PERMISSION_ADMIN,
-                ]),
-                dcCore::app()->blog->id
-            );
-
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->addBehavior('adminPostsActions', function (dcPostsActions $pa) {
+        dcCore::app()->addBehavior('adminPostsActions', function (ActionsPosts $pa) {
             $pa->addAction(
                 [
                     __('Comments') => [
@@ -60,7 +51,7 @@ class Backend extends dcNsProcess
                         __('Delete all trackbacks') => 'trackbacksdelete',
                     ],
                 ],
-                function (dcPostsActions $pa, ArrayObject $post) {
+                function (ActionsPosts $pa, ArrayObject $post) {
                     $actions = [
                         'commentsopen',
                         'commentsclose',

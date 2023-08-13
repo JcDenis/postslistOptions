@@ -17,8 +17,11 @@ namespace Dotclear\Plugin\postslistOptions;
 use ArrayObject;
 use dcBlog;
 use dcCore;
-use dcPage;
-use dcPostsActions;
+use Dotclear\Core\Backend\{
+    Notices,
+    Page
+};
+use Dotclear\Core\Backend\Action\ActionsPosts;
 use Dotclear\Helper\Html\Form\{
     Form,
     Hidden,
@@ -31,25 +34,25 @@ use Exception;
 
 class BackendBehaviors
 {
-    public static function commentsOpen(dcPostsActions $pa, ArrayObject $post): void
+    public static function commentsOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 1);
         }
-        dcPage::addSuccessNotice(__('Comments successfully opened.'));
+        Notices::addSuccessNotice(__('Comments successfully opened.'));
         $pa->redirect(true);
     }
 
-    public static function commentsClose(dcPostsActions $pa, ArrayObject $post): void
+    public static function commentsClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 0);
         }
-        dcPage::addSuccessNotice(__('Comments successfully closed.'));
+        Notices::addSuccessNotice(__('Comments successfully closed.'));
         $pa->redirect(true);
     }
 
-    public static function commentsDelete(dcPostsActions $pa, ArrayObject $post): void
+    public static function commentsDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         //nullsafe
         if (is_null(dcCore::app()->blog)) {
@@ -60,7 +63,7 @@ class BackendBehaviors
 
         if (empty($_POST['confirmdeletecomments'])) {
             $pa->beginPage(
-                dcPage::breadcrumb([
+                Page::breadcrumb([
                     Html::escapeHTML(dcCore::app()->blog->name) => '',
                     $pa->getCallerTitle()                       => $pa->getRedirection(true),
                     __('Delete posts comments')                 => '',
@@ -94,30 +97,30 @@ class BackendBehaviors
                 self::delPostComments($post_id, false);
                 self::updPostOption($post_id, 'nb_comment', 0);
             }
-            dcPage::addSuccessNotice(__('Comments successfully deleted.'));
+            Notices::addSuccessNotice(__('Comments successfully deleted.'));
             $pa->redirect(true);
         }
     }
 
-    public static function trackbacksOpen(dcPostsActions $pa, ArrayObject $post): void
+    public static function trackbacksOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 1);
         }
-        dcPage::addSuccessNotice(__('Trackbacks successfully opened.'));
+        Notices::addSuccessNotice(__('Trackbacks successfully opened.'));
         $pa->redirect(true);
     }
 
-    public static function trackbacksClose(dcPostsActions $pa, ArrayObject $post): void
+    public static function trackbacksClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 0);
         }
-        dcPage::addSuccessNotice(__('Trackbacks successfully closed.'));
+        Notices::addSuccessNotice(__('Trackbacks successfully closed.'));
         $pa->redirect(true);
     }
 
-    public static function trackbacksDelete(dcPostsActions $pa, ArrayObject $post): void
+    public static function trackbacksDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         //nullsafe
         if (is_null(dcCore::app()->blog)) {
@@ -128,7 +131,7 @@ class BackendBehaviors
 
         if (empty($_POST['confirmdeletetrackbacks'])) {
             $pa->beginPage(
-                dcPage::breadcrumb([
+                Page::breadcrumb([
                     Html::escapeHTML(dcCore::app()->blog->name) => '',
                     $pa->getCallerTitle()                       => $pa->getRedirection(true),
                     __('Delete posts trackbacks')               => '',
@@ -159,12 +162,12 @@ class BackendBehaviors
                 self::delPostComments($post_id, true);
                 self::updPostOption($post_id, 'nb_trackback', 0);
             }
-            dcPage::addSuccessNotice(__('Trackbacks successfully deleted.'));
+            Notices::addSuccessNotice(__('Trackbacks successfully deleted.'));
             $pa->redirect(true);
         }
     }
 
-    private static function getPostsIds(dcPostsActions $pa): array
+    private static function getPostsIds(ActionsPosts $pa): array
     {
         $posts_ids = $pa->getIDs();
         if (empty($posts_ids)) {

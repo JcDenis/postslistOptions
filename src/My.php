@@ -18,4 +18,5 @@ use Dotclear\Module\MyPlugin;
 
 class My extends MyPlugin
 {
+    // Use defautl permissions
 }

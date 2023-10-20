@@ -1,22 +1,11 @@
 <?php
-/**
- * @brief postslistOptions, a plugin for Dotclear 2
- *
- * @package Dotclear
- * @subpackage Plugin
- *
- * @author Jean-Christian Denis and Contributors
- *
- * @copyright Jean-Christian Denis
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
- */
+
 declare(strict_types=1);
 
 namespace Dotclear\Plugin\postslistOptions;
 
 use ArrayObject;
-use dcBlog;
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\{
     Notices,
     Page
@@ -32,6 +21,13 @@ use Dotclear\Helper\Html\Form\{
 use Dotclear\Helper\Html\Html;
 use Exception;
 
+/**
+ * @brief       postslistOptions backend behaviors class.
+ * @ingroup     postslistOptions
+ *
+ * @author      Jean-Christian Denis
+ * @copyright   GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ */
 class BackendBehaviors
 {
     public static function commentsOpen(ActionsPosts $pa, ArrayObject $post): void
@@ -54,8 +50,7 @@ class BackendBehaviors
 
     public static function commentsDelete(ActionsPosts $pa, ArrayObject $post): void
     {
-        //nullsafe
-        if (is_null(dcCore::app()->blog)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
@@ -64,9 +59,9 @@ class BackendBehaviors
         if (empty($_POST['confirmdeletecomments'])) {
             $pa->beginPage(
                 Page::breadcrumb([
-                    Html::escapeHTML(dcCore::app()->blog->name) => '',
-                    $pa->getCallerTitle()                       => $pa->getRedirection(true),
-                    __('Delete posts comments')                 => '',
+                    Html::escapeHTML(App::blog()->name()) => '',
+                    $pa->getCallerTitle()                 => $pa->getRedirection(true),
+                    __('Delete posts comments')           => '',
                 ])
             );
 
@@ -78,16 +73,14 @@ class BackendBehaviors
                     (new Text('', $pa->getCheckboxes())),
                     (new Text('p', __('Are you sure you want to delete all comments?'))),
                     (new Para())
-                        ->__call('items', [array_merge(
-                            [
-                                (new Submit(['do']))
-                                    ->__call('value', [__('yes')]),
-                                dcCore::app()->formNonce(false),
-                                (new Hidden(['action'], 'commentsdelete')),
-                                (new Hidden(['confirmdeletecomments'], '1')),
-                            ],
-                            $pa->hiddenFields(),
-                        )]),
+                        ->__call('items', [
+                            (new Submit(['do']))
+                                ->__call('value', [__('yes')]),
+                            App::nonce()->formNonce(),
+                            (new Hidden(['action'], 'commentsdelete')),
+                            (new Hidden(['confirmdeletecomments'], '1')),
+                            ... $pa->hiddenFields(),
+                        ]),
                 ]])
                 ->render();
 
@@ -122,8 +115,7 @@ class BackendBehaviors
 
     public static function trackbacksDelete(ActionsPosts $pa, ArrayObject $post): void
     {
-        //nullsafe
-        if (is_null(dcCore::app()->blog)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
@@ -132,9 +124,9 @@ class BackendBehaviors
         if (empty($_POST['confirmdeletetrackbacks'])) {
             $pa->beginPage(
                 Page::breadcrumb([
-                    Html::escapeHTML(dcCore::app()->blog->name) => '',
-                    $pa->getCallerTitle()                       => $pa->getRedirection(true),
-                    __('Delete posts trackbacks')               => '',
+                    Html::escapeHTML(App::blog()->name()) => '',
+                    $pa->getCallerTitle()                 => $pa->getRedirection(true),
+                    __('Delete posts trackbacks')         => '',
                 ])
             );
 
@@ -146,13 +138,13 @@ class BackendBehaviors
                     (new Text('', $pa->getCheckboxes())),
                     (new Text('p', __('Are you sure you want to delete all trackbacks?'))),
                     (new Para())
-                        ->__call('items', [array_merge([
+                        ->__call('items', [
                             (new Submit(['do']))
                                 ->__call('value', [__('yes')]),
-                            dcCore::app()->formNonce(false),
+                            App::nonce()->formNonce(),
                             (new Hidden(['action'], 'trackbacksdelete')),
                             (new Hidden(['confirmdeletetrackbacks'], '1')),
-                        ], $pa->hiddenFields())]),
+                            ... $pa->hiddenFields()]),
                 ]])
                 ->render();
 
@@ -179,28 +171,26 @@ class BackendBehaviors
 
     private static function updPostOption(int $id, string $option, int $value): void
     {
-        //nullsafe
-        if (is_null(dcCore::app()->blog)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
         $id  = abs((int) $id);
-        $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcBlog::POST_TABLE_NAME);
+        $cur = App::blog()->openPostCursor();
 
         $cur->setField($option, $value);
         $cur->setField('post_upddt', date('Y-m-d H:i:s'));
 
         $cur->update(
             'WHERE post_id = ' . $id . ' ' .
-            "AND blog_id = '" . dcCore::app()->con->escapeStr((string) dcCore::app()->blog->id) . "' "
+            "AND blog_id = '" . App::con()->escapeStr(App::blog()->id()) . "' "
         );
-        dcCore::app()->blog->triggerBlog();
+        App::blog()->triggerBlog();
     }
 
     private static function delPostComments(int $id, bool $tb = false): void
     {
-        //nullsafe
-        if (is_null(dcCore::app()->blog)) {
+        if (!App::blog()->isDefined()) {
             return;
         }
 
@@ -209,11 +199,11 @@ class BackendBehaviors
             'post_id'           => abs((int) $id),
             'comment_trackback' => $tb ? 1 : 0,
         ];
-        $comments = dcCore::app()->blog->getComments($params);
+        $comments = App::blog()->getComments($params);
 
         while ($comments->fetch()) {
             // slower but preserve behaviors
-            dcCore::app()->blog->delComment($comments->f('comment_id'));
+            App::blog()->delComment($comments->f('comment_id'));
         }
     }
 }

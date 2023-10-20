@@ -1,26 +1,23 @@
 # README
 
 [![Release](https://img.shields.io/badge/release-2023.08.13-a2cbe9.svg)](https://git.dotclear.watch/JcDenis/postslistOptions/releases)
-[![Date](https://img.shields.io/badge/date-2023.08.13-c44d58.svg)](https://git.dotclear.watch/JcDenis/postslistOptions/releases)
+![Date](https://img.shields.io/badge/date-2023.08.13-c44d58.svg)
 [![Dotclear](https://img.shields.io/badge/dotclear-v2.27-137bbb.svg)](https://fr.dotclear.org/download)
 [![Dotaddict](https://img.shields.io/badge/dotaddict-official-9ac123.svg)](https://plugins.dotaddict.org/dc2/details/postslistOptions)
-[![License](https://img.shields.io/github/license/JcDenis/postslistOptions)](https://git.dotclear.watch/JcDenis/postslistOptions/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--2.0-ececec.svg)](https://git.dotclear.watch/JcDenis/postslistOptions/src/branch/master/LICENSE)
 
-## WHAT IS POSTsLISTOPTIONS ?
+## ABOUT
 
-"Posts list  options" is a plugin for the open-source 
-web publishing software called Dotclear.
+_postslistOptions_ is a plugin for the open-source web publishing software called [Dotclear](https://www.dotclear.org).
 
-It add options on the posts list action box like 
+> Add options on the posts list action box like 
 open/close/delete comments/trackbacks on multiple posts.
 
 ## REQUIREMENTS
 
-_postslistOptions_ requires: 
-
-* admin permissions
-* Dotclear 2.27
-* PHP 7.4
+* Dotclear 2.28
+* PHP 8.1
+* Dotclear admin permissions
 
 ## USAGE
 
@@ -31,12 +28,13 @@ Then this plugin adds options de the posts list actions box.
 
 ## LINKS
 
-* License : [GNU GPL v2](https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)
-* Source & contribution : [Gitea Page](https://git.dotclear.watch/JcDenis/postslistOptions) or [GitHub Page](https://github.com/JcDenis/postslistOptions)
-* Packages & details: [Gitea Page](https://git.dotclear.watch/JcDenis/postslistOptions/releases) or [Dotaddict Page](https://plugins.dotaddict.org/dc2/details/postslistOptions)
+* [License](https://git.dotclear.watch/JcDenis/postslistOptions/src/branch/master/LICENSE)
+* [Packages & details](https://git.dotclear.watch/JcDenis/postslistOptions/releases) (or on [Dotaddict](https://plugins.dotaddict.org/dc2/details/postslistOptions))
+* [Sources & contributions](https://git.dotclear.watch/JcDenis/postslistOptions) (or on [GitHub](https://github.com/JcDenis/postslistOptions))
+* [Issues & security](https://git.dotclear.watch/JcDenis/postslistOptions/issues) (or on [GitHub](https://github.com/JcDenis/postslistOptions/issues))
 
 ## CONTRIBUTORS
 
-* Jean-Christian Denis
+* Jean-Christian Denis (author)
 
 You are welcome to contribute to this code.

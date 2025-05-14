@@ -6,18 +6,9 @@ namespace Dotclear\Plugin\postslistOptions;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Core\Backend\{
-    Notices,
-    Page
-};
 use Dotclear\Core\Backend\Action\ActionsPosts;
-use Dotclear\Helper\Html\Form\{
-    Form,
-    Hidden,
-    Para,
-    Submit,
-    Text
-};
+use Dotclear\Core\Backend\{ Notices, Page };
+use Dotclear\Helper\Html\Form\{ Form, Hidden, Para, Submit, Text };
 use Dotclear\Helper\Html\Html;
 use Exception;
 
@@ -30,6 +21,40 @@ use Exception;
  */
 class BackendBehaviors
 {
+    public static function adminPostsActions(ActionsPosts $pa): void
+    {
+        $pa->addAction(
+            [
+                __('Comments') => [
+                    __('Mark as opened')      => 'commentsopen',
+                    __('Mark as closed')      => 'commentsclose',
+                    __('Delete all comments') => 'commentsdelete',
+                ],
+                __('Trackbacks') => [
+                    __('Mark as opened')        => 'trackbacksopen',
+                    __('Mark as closed')        => 'trackbacksclose',
+                    __('Delete all trackbacks') => 'trackbacksdelete',
+                ],
+            ],
+            function (ActionsPosts $pa, ArrayObject $post) {
+                $actions = [
+                    'commentsopen',
+                    'commentsclose',
+                    'commentsdelete',
+                    'trackbacksopen',
+                    'trackbacksclose',
+                    'trackbacksdelete',
+                ];
+                if (in_array($pa->getAction(), $actions)) {
+                    BackendBehaviors::{$pa->getAction()}($pa, $post);
+                }
+            }
+        );
+    }
+
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function commentsOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
@@ -39,6 +64,9 @@ class BackendBehaviors
         $pa->redirect(true);
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function commentsClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
@@ -48,6 +76,9 @@ class BackendBehaviors
         $pa->redirect(true);
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function commentsDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         if (!App::blog()->isDefined()) {
@@ -95,6 +126,9 @@ class BackendBehaviors
         }
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function trackbacksOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
@@ -104,6 +138,9 @@ class BackendBehaviors
         $pa->redirect(true);
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function trackbacksClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
@@ -113,6 +150,9 @@ class BackendBehaviors
         $pa->redirect(true);
     }
 
+    /**
+     * @param   ArrayObject<string, mixed>      $post   The post
+     */
     public static function trackbacksDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         if (!App::blog()->isDefined()) {
@@ -159,9 +199,12 @@ class BackendBehaviors
         }
     }
 
+    /**
+     * @return  array<int>   The list
+     */
     private static function getPostsIds(ActionsPosts $pa): array
     {
-        $posts_ids = $pa->getIDs();
+        $posts_ids = array_map(fn ($v): int => (int) $v, $pa->getIDs());
         if (empty($posts_ids)) {
             throw new Exception(__('No entry selected'));
         }

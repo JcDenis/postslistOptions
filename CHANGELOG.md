@@ -1,3 +1,8 @@
+postslistOptions 2025.05.14
+===========================================================
+* Bump to Dotclear 2.34
+* Add support for pages actions
+
 postslistOptions 2025.03.02
 ===========================================================
 * Require Dotclear 2.28

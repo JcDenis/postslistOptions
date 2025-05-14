@@ -17,9 +17,9 @@ $this->registerModule(
     'Posts list options',
     'Add some options on admin posts list',
     'Jean-Christian Denis and Contributors',
-    '2025.03.02',
+    '2025.05.14',
     [
-        'requires'    => [['core', '2.28']],
+        'requires'    => [['core', '2.34']],
         'permissions' => 'My',
         'type'        => 'plugin',
         'support'     => 'https://github.com/JcDenis/' . $this->id . '/issues',

@@ -7,8 +7,13 @@ namespace Dotclear\Plugin\postslistOptions;
 use ArrayObject;
 use Dotclear\App;
 use Dotclear\Core\Backend\Action\ActionsPosts;
-use Dotclear\Core\Backend\{ Notices, Page };
-use Dotclear\Helper\Html\Form\{ Form, Hidden, Para, Submit, Text };
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Hidden;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Submit;
+use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
@@ -46,7 +51,7 @@ class BackendBehaviors
                     'trackbacksdelete',
                 ];
                 if (in_array($pa->getAction(), $actions)) {
-                    BackendBehaviors::{$pa->getAction()}($pa, $post);
+                    self::{$pa->getAction()}($pa, $post);
                 }
             }
         );
@@ -55,7 +60,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function commentsOpen(ActionsPosts $pa, ArrayObject $post): void
+    private static function commentsOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 1);
@@ -67,7 +72,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function commentsClose(ActionsPosts $pa, ArrayObject $post): void
+    private static function commentsClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_comment', 0);
@@ -79,7 +84,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function commentsDelete(ActionsPosts $pa, ArrayObject $post): void
+    private static function commentsDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         if (!App::blog()->isDefined()) {
             return;
@@ -129,7 +134,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function trackbacksOpen(ActionsPosts $pa, ArrayObject $post): void
+    private static function trackbacksOpen(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 1);
@@ -141,7 +146,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function trackbacksClose(ActionsPosts $pa, ArrayObject $post): void
+    private static function trackbacksClose(ActionsPosts $pa, ArrayObject $post): void
     {
         foreach (self::getPostsIds($pa) as $post_id) {
             self::updPostOption($post_id, 'post_open_tb', 0);
@@ -153,7 +158,7 @@ class BackendBehaviors
     /**
      * @param   ArrayObject<string, mixed>      $post   The post
      */
-    public static function trackbacksDelete(ActionsPosts $pa, ArrayObject $post): void
+    private static function trackbacksDelete(ActionsPosts $pa, ArrayObject $post): void
     {
         if (!App::blog()->isDefined()) {
             return;
@@ -226,7 +231,7 @@ class BackendBehaviors
 
         $cur->update(
             'WHERE post_id = ' . $id . ' ' .
-            "AND blog_id = '" . App::con()->escapeStr(App::blog()->id()) . "' "
+            "AND blog_id = '" . App::db()->con()->escapeStr(App::blog()->id()) . "' "
         );
         App::blog()->triggerBlog();
     }

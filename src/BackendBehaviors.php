@@ -103,21 +103,21 @@ class BackendBehaviors
 
             echo
             (new Form('plocd'))
-                ->__call('method', ['post'])
-                ->__call('action', [$pa->getURI()])
-                ->__call('fields', [[
+                ->method('post')
+                ->action($pa->getURI())
+                ->fields([
                     (new Text('', $pa->getCheckboxes())),
                     (new Text('p', __('Are you sure you want to delete all comments?'))),
                     (new Para())
-                        ->__call('items', [
+                        ->items([
                             (new Submit(['do']))
-                                ->__call('value', [__('yes')]),
+                                ->value(__('yes')),
                             App::nonce()->formNonce(),
                             (new Hidden(['action'], 'commentsdelete')),
                             (new Hidden(['confirmdeletecomments'], '1')),
                             ... $pa->hiddenFields(),
                         ]),
-                ]])
+                ])
                 ->render();
 
             $pa->endPage();
@@ -177,20 +177,20 @@ class BackendBehaviors
 
             echo
             (new Form('plotd'))
-                ->__call('method', ['post'])
-                ->__call('action', [$pa->getURI()])
-                ->__call('fields', [[
+                ->method('post')
+                ->action($pa->getURI())
+                ->fields([
                     (new Text('', $pa->getCheckboxes())),
                     (new Text('p', __('Are you sure you want to delete all trackbacks?'))),
                     (new Para())
-                        ->__call('items', [
+                        ->items([
                             (new Submit(['do']))
-                                ->__call('value', [__('yes')]),
+                                ->value(__('yes')),
                             App::nonce()->formNonce(),
                             (new Hidden(['action'], 'trackbacksdelete')),
                             (new Hidden(['confirmdeletetrackbacks'], '1')),
                             ... $pa->hiddenFields()]),
-                ]])
+                ])
                 ->render();
 
             $pa->endPage();
@@ -251,7 +251,7 @@ class BackendBehaviors
 
         while ($comments->fetch()) {
             // slower but preserve behaviors
-            App::blog()->delComment($comments->f('comment_id'));
+            App::blog()->delComment($comments->intField('comment_id'));
         }
     }
 }

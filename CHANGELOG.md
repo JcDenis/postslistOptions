@@ -1,6 +1,11 @@
+postslistOptions xxxx.xx.xx
+===========================================================
+* Bump Dotclear from 2.36 to 2.39
+* Code review (phpstan max)
+
 postslistOptions 2025.09.13
 ===========================================================
-* Bump DOtclear from 2.34 to 2.36
+* Bump Dotclear from 2.34 to 2.36
 
 postslistOptions 2025.05.14
 ===========================================================

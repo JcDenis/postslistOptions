@@ -7,7 +7,7 @@
     <desc>Add some options on admin posts list</desc>
     <file>https://github.com/JcDenis/postslistOptions/releases/download/v2026.08.12/plugin-postslistOptions.zip</file>
     <da:dcmin>2.39</da:dcmin>
-    <da:details>https://github.com/JcDenis/postslistOptions/src/branch/master/README.md</da:details>
+    <da:details>https://github.com/JcDenis/postslistOptions/blob/master/README.md</da:details>
     <da:support>https://github.com/JcDenis/postslistOptions/issues</da:support>
   </module>
 </modules>

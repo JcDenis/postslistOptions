@@ -21,7 +21,7 @@ $this->registerModule(
     'Posts list options',
     'Add some options on admin posts list',
     'Jean-Christian Denis and Contributors',
-    '2026.08.12',
+    '2026.11.15',
     [
         'requires'    => [['core', '2.39']],
         'permissions' => 'My',
@@ -29,6 +29,6 @@ $this->registerModule(
         'support'     => 'https://github.com/JcDenis/' . $this->id . '/issues',
         'details'     => 'https://github.com/JcDenis/' . $this->id . '/',
         'repository'  => 'https://raw.githubusercontent.com/JcDenis/' . $this->id . '/master/dcstore.xml',
-        'date'        => '2026-08-12T21:20:49+00:00',
+        'date'        => '2026-11-15T13:34:59+00:00',
     ]
 );

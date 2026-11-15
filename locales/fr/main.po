@@ -38,17 +38,30 @@ msgid "Comments successfully deleted."
 msgstr "Commentaires supprimés avec succès."
 
 msgid "Trackbacks successfully opened."
-msgstr "Trackbacks ouverts avec succès."
+msgstr "Rétroliens ouverts avec succès."
 
 msgid "Trackbacks successfully closed."
-msgstr "Trackbacks fermés avec succès."
+msgstr "Rétroliens fermés avec succès."
 
 msgid "Delete posts trackbacks"
-msgstr "Supprimer les trackbacks des billets"
+msgstr "Supprimer les rétroliens des billets"
 
 msgid "Are you sure you want to delete all trackbacks?"
 msgstr "Êtes-vous sûr de vouloir supprimer tous les rétroliens ?"
 
 msgid "Trackbacks successfully deleted."
-msgstr "Trackbacks supprimés avec succès."
+msgstr "Rétroliens supprimés avec succès."
 
+
+msgid "One trackback, whatever its status, will be permanently deleted."
+msgid_plural "%d trackbacks, whatever their status, will be permanently deleted."
+msgstr[0] "Un rétrolien, quel que soit son statut, sera définitivement supprimé."
+msgstr[1] "%d rétroliens, quel que soit leur statut, seront définitivement supprimés."
+
+msgid "One comment, whatever its status, will be permanently deleted."
+msgid_plural "%d comments, whatever their status, will be permanently deleted."
+msgstr[0] "Un commentaire, quel que soit son statut, sera définitivement supprimé."
+msgstr[1] "%d commentaires, quel que soit leur statut, seront définitivement supprimés."
+
+msgid "I confirm this deletion"
+msgstr "Je confirme cette suppression"

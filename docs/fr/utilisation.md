@@ -36,6 +36,5 @@ Les commentaires (ou rétroliens) sont alors supprimés et le compteur de chaque
 
 ## Bon à savoir
 
-* Contrôlez bien les billets cochés avant de confirmer une suppression : tous les commentaires de tous ces billets sont supprimés, quel que soit leur état.
-* Les billets cochés restent cochés après une action : vérifiez la sélection avant d'enchaîner une deuxième action.
+* Contrôlez bien la liste des billets affichée sur la page de confirmation avant de supprimer : tous leurs commentaires (ou rétroliens) sont supprimés.
 * Dans l'interface en français, les messages de succès pour les rétroliens disent « Trackbacks fermés / ouverts » au lieu de « Rétroliens ».

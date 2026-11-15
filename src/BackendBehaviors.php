@@ -50,17 +50,15 @@ class BackendBehaviors
                 ],
             ],
             function (ActionsPosts $pa, ArrayObject $post) {
-                $actions = [
-                    'commentsopen',
-                    'commentsclose',
-                    'commentsdelete',
-                    'trackbacksopen',
-                    'trackbacksclose',
-                    'trackbacksdelete',
-                ];
-                if (in_array($pa->getAction(), $actions)) {
-                    self::{$pa->getAction()}($pa, $post);
-                }
+                match ($pa->getAction()) {
+                    'commentsopen'     => self::commentsOpen($pa, $post),
+                    'commentsclose'    => self::commentsClose($pa, $post),
+                    'commentsdelete'   => self::commentsDelete($pa, $post),
+                    'trackbacksopen'   => self::trackbacksOpen($pa, $post),
+                    'trackbacksclose'  => self::trackbacksClose($pa, $post),
+                    'trackbacksdelete' => self::trackbacksDelete($pa, $post),
+                    default            => null,
+                };
             }
         );
     }
@@ -170,10 +168,11 @@ class BackendBehaviors
         $total = 0;
         $rs    = App::blog()->getPosts(['post_id' => $ids, 'no_content' => true, 'post_type' => '']);
         while ($rs->fetch()) {
-            $count = (int) App::blog()->getComments([
+            $count = App::blog()->getComments([
                 'post_id'           => $rs->intField('post_id'),
                 'comment_trackback' => $tb ? 1 : 0,
             ], true)->f(0);
+            $count = is_numeric($count) ? (int) $count : 0;
             $total += $count;
             $rows[] = (new Tr())->items([
                 (new Td())->class('minimal')->items([

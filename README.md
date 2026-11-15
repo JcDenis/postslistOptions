@@ -13,6 +13,8 @@ _postslistOptions_ is a plugin for the open-source web publishing software calle
 > Add options on the posts or pages lists actions box like 
 open/close/delete comments/trackbacks on multiple posts/pages.
 
+A [user guide in French](https://github.com/JcDenis/postslistOptions/blob/master/docs/fr/utilisation.md) is available.
+
 ## REQUIREMENTS
 
 * Dotclear 2.39
@@ -28,6 +30,7 @@ Then this plugin adds options to the posts/pages list actions box.
 
 ## LINKS
 
+* [User guide (in French)](https://github.com/JcDenis/postslistOptions/blob/master/docs/fr/utilisation.md)
 * [License](https://github.com/JcDenis/postslistOptions/blob/master/LICENSE)
 * [Packages & details](https://github.com/JcDenis/postslistOptions/releases) (or on [Repository](https://dotclear.org/plugin/detail/postslistOptions))
 * [Sources & contributions](https://github.com/JcDenis/postslistOptions)

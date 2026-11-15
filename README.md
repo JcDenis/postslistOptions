@@ -36,5 +36,6 @@ Then this plugin adds options to the posts/pages list actions box.
 ## CONTRIBUTORS
 
 * Jean-Christian Denis (author)
+* Claude (AI assistant by Anthropic)
 
 You are welcome to contribute to this code.

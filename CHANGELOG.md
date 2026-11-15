@@ -2,7 +2,6 @@ postslistOptions 2026.11.15
 ===========================================================
 * [fix] Deletion of comments or trackbacks shows a summary and needs a confirmation checkbox
 * [lang] Use rétroliens in messages
-* [fix] PHPStan: explicit actions dispatch, count type
 * [docs] Add a user guide in French, with screenshots
 
 postslistOptions 2026.08.12

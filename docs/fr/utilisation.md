@@ -28,7 +28,7 @@ Un message confirme l'opération, par exemple « Commentaires fermés avec succ�
 
 ## Supprimer tous les commentaires ou rétroliens
 
-Les actions « Supprimer tous les commentaires » et « Supprimer tous les rétroliens » demandent une confirmation : la page liste les billets concernés et demande « Êtes-vous sûr de vouloir supprimer tous les commentaires ? ». Cliquez sur « oui » pour confirmer.
+Les actions « Supprimer tous les commentaires » et « Supprimer tous les rétroliens » passent par une page de confirmation. Elle liste les billets cochés avec leur nombre de commentaires (ou de rétroliens), et indique le total qui sera supprimé, quel que soit leur statut (publiés, en attente, indésirables…). Cochez « Je confirme cette suppression », puis cliquez sur « Supprimer ».
 
 ![Confirmation](img/confirmation-suppression.png)
 
@@ -36,5 +36,4 @@ Les commentaires (ou rétroliens) sont alors supprimés et le compteur de chaque
 
 ## Bon à savoir
 
-* Contrôlez bien la liste des billets affichée sur la page de confirmation avant de supprimer : tous leurs commentaires (ou rétroliens) sont supprimés.
-* Dans l'interface en français, les messages de succès pour les rétroliens disent « Trackbacks fermés / ouverts » au lieu de « Rétroliens ».
+* Contrôlez bien la liste et le total affichés sur la page de confirmation avant de supprimer : les commentaires indésirables et en attente sont supprimés aussi.

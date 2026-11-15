@@ -9,11 +9,19 @@ use Dotclear\App;
 use Dotclear\Core\Backend\Action\ActionsPosts;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
+use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Hidden;
+use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Form\Submit;
+use Dotclear\Helper\Html\Form\Table;
+use Dotclear\Helper\Html\Form\Tbody;
+use Dotclear\Helper\Html\Form\Td;
 use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Th;
+use Dotclear\Helper\Html\Form\Thead;
+use Dotclear\Helper\Html\Form\Tr;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
@@ -93,34 +101,7 @@ class BackendBehaviors
         $ids = self::getPostsIds($pa);
 
         if (empty($_POST['confirmdeletecomments'])) {
-            $pa->beginPage(
-                Page::breadcrumb([
-                    Html::escapeHTML(App::blog()->name()) => '',
-                    $pa->getCallerTitle()                 => $pa->getRedirection(true),
-                    __('Delete posts comments')           => '',
-                ])
-            );
-
-            echo
-            (new Form('plocd'))
-                ->method('post')
-                ->action($pa->getURI())
-                ->fields([
-                    (new Text('', $pa->getCheckboxes())),
-                    (new Text('p', __('Are you sure you want to delete all comments?'))),
-                    (new Para())
-                        ->items([
-                            (new Submit(['do']))
-                                ->value(__('yes')),
-                            App::nonce()->formNonce(),
-                            (new Hidden(['action'], 'commentsdelete')),
-                            (new Hidden(['confirmdeletecomments'], '1')),
-                            ... $pa->hiddenFields(),
-                        ]),
-                ])
-                ->render();
-
-            $pa->endPage();
+            self::confirmDelete($pa, $ids, false);
         } else {
             foreach ($ids as $post_id) {
                 self::delPostComments($post_id, false);
@@ -167,33 +148,7 @@ class BackendBehaviors
         $ids = self::getPostsIds($pa);
 
         if (empty($_POST['confirmdeletetrackbacks'])) {
-            $pa->beginPage(
-                Page::breadcrumb([
-                    Html::escapeHTML(App::blog()->name()) => '',
-                    $pa->getCallerTitle()                 => $pa->getRedirection(true),
-                    __('Delete posts trackbacks')         => '',
-                ])
-            );
-
-            echo
-            (new Form('plotd'))
-                ->method('post')
-                ->action($pa->getURI())
-                ->fields([
-                    (new Text('', $pa->getCheckboxes())),
-                    (new Text('p', __('Are you sure you want to delete all trackbacks?'))),
-                    (new Para())
-                        ->items([
-                            (new Submit(['do']))
-                                ->value(__('yes')),
-                            App::nonce()->formNonce(),
-                            (new Hidden(['action'], 'trackbacksdelete')),
-                            (new Hidden(['confirmdeletetrackbacks'], '1')),
-                            ... $pa->hiddenFields()]),
-                ])
-                ->render();
-
-            $pa->endPage();
+            self::confirmDelete($pa, $ids, true);
         } else {
             foreach ($ids as $post_id) {
                 self::delPostComments($post_id, true);
@@ -202,6 +157,79 @@ class BackendBehaviors
             Notices::addSuccessNotice(__('Trackbacks successfully deleted.'));
             $pa->redirect(true);
         }
+    }
+
+    /**
+     * Display deletion summary and confirmation form.
+     *
+     * @param   array<int>  $ids    The posts IDs
+     */
+    private static function confirmDelete(ActionsPosts $pa, array $ids, bool $tb): void
+    {
+        $rows  = [];
+        $total = 0;
+        $rs    = App::blog()->getPosts(['post_id' => $ids, 'no_content' => true, 'post_type' => '']);
+        while ($rs->fetch()) {
+            $count = (int) App::blog()->getComments([
+                'post_id'           => $rs->intField('post_id'),
+                'comment_trackback' => $tb ? 1 : 0,
+            ], true)->f(0);
+            $total += $count;
+            $rows[] = (new Tr())->items([
+                (new Td())->class('minimal')->items([
+                    (new Checkbox(['entries[]'], true))->value($rs->intField('post_id')),
+                ]),
+                (new Td())->text(Html::escapeHTML($rs->strField('post_title'))),
+                (new Td())->class(['nowrap', 'count'])->text((string) $count),
+            ]);
+        }
+
+        $pa->beginPage(
+            Page::breadcrumb([
+                Html::escapeHTML(App::blog()->name()) => '',
+                $pa->getCallerTitle()                 => $pa->getRedirection(true),
+                $tb ? __('Delete posts trackbacks') : __('Delete posts comments') => '',
+            ])
+        );
+
+        echo (new Form($tb ? 'plotd' : 'plocd'))
+            ->method('post')
+            ->action($pa->getURI())
+            ->fields([
+                (new Table())->class('posts-list')->items([
+                    (new Thead())->items([
+                        (new Tr())->items([
+                            (new Th())->text(''),
+                            (new Th())->text(__('Title')),
+                            (new Th())->class('nowrap')->text($tb ? __('Trackbacks') : __('Comments')),
+                        ]),
+                    ]),
+                    (new Tbody())->items($rows),
+                ]),
+                (new Para())->class('warning')->items([
+                    (new Text(null, sprintf(
+                        $tb ?
+                            __('One trackback, whatever its status, will be permanently deleted.', '%d trackbacks, whatever their status, will be permanently deleted.', $total) :
+                            __('One comment, whatever its status, will be permanently deleted.', '%d comments, whatever their status, will be permanently deleted.', $total),
+                        $total
+                    ))),
+                ]),
+                (new Para())->items([
+                    (new Checkbox($tb ? 'confirmdeletetrackbacks' : 'confirmdeletecomments'))
+                        ->value('1')
+                        ->required(true)
+                        ->label(new Label(__('I confirm this deletion'), Label::IL_FT)),
+                ]),
+                (new Para())->items([
+                    (new Submit(['do']))->value(__('Delete')),
+                    App::nonce()->formNonce(),
+                    (new Hidden(['action'], $tb ? 'trackbacksdelete' : 'commentsdelete')),
+                    ... $pa->hiddenFields(),
+                ]),
+            ])
+            ->render();
+
+        $pa->endPage();
     }
 
     /**
